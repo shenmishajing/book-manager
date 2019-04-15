@@ -1,19 +1,22 @@
 from dateutil.parser import *
-from main import cursor
+from main import db
+from function import *
 
-def parseTable(table):
-    l = list()
+cursor = db.cursor()
+
+
+def parse_table(table):
+    l = []
     try:
-        cursor.execute("desc " + table + ";")
-        result = cursor.fetchall()
+        result = execute_sql(db, "desc " + table + ";")
         for c in result:
-            l.append([c[0],c[1]])
+            l.append([c[0], c[1]])
     except:
         print("Error")
     return l
 
 
-def parseType(type,inputs):
+def parse_type(type, inputs):
     if "char" in type:
         result = inputs
     elif "int" in type:
@@ -25,19 +28,13 @@ def parseType(type,inputs):
     return result
 
 
-
-
 def insert():
-    print("Select a table:")
-    table = input()
-    l = parseTable(table)
+    table = input("Select a table:")
+    l = parse_table(table)
     if len(l) != 0:
-        values = list()
+        values = []
         for c in l:
-            print(c[0] + ":",end='')
+            print(c[0] + ":", end='')
             temp = input()
-            value = parseType(c[1],temp)
+            value = parse_type(c[1], temp)
             values.append(value)
-
-
-

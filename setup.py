@@ -1,11 +1,8 @@
 import pymysql
+from function import *
 
-print('please input the passwd of root')
-passwd = input()
-
+passwd = input('please input the passwd of root:')
 db = pymysql.connect(host='localhost', port=3306, user='root', passwd=passwd)
-
-cursor = db.cursor()
 
 sqls = ['''
             show databases;
@@ -75,14 +72,9 @@ sqls = ['''
             show tables;
         ''']
 
-for sql in sqls:
-    try:
-        cursor.execute(sql)
-        db.commit()
-        results = cursor.fetchall()
-        print(results)
-    except:
-        db.rollback()
+results = execute_sql(db, sqls)
 
-cursor.close()
+for result in results:
+    print(result)
+
 db.close()

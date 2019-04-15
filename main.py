@@ -4,7 +4,7 @@ db = root_login()
 
 while 1:
     while 1:
-        choose = select_option('Please choose next action', ['login', 'register', 'exit'], default=0)
+        choose = select_option('Please choose next action', ['login', 'register', 'exit'])
         if choose == 0:
             user = login(db)
         elif choose == 1:
@@ -19,7 +19,7 @@ while 1:
 
     while 1:
         choose = select_option('Please choose next action',
-                               ['stock in', 'query', 'borrow', 'return', 'manager card', 'exit'], default=0)
+                               ['stock in', 'query', 'borrow', 'return', 'manager card', 'exit'])
         if choose == 0:
             stock_in(db)
         elif choose == 1:

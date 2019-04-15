@@ -1,12 +1,13 @@
 import pymysql
 from execute_sql import *
+import os
 
 
 def select_option(message, options, default=0):
     print(message)
     for i, option in enumerate(options):
         print('[{}] '.format(i) + option)
-    print('please input a number between 0 and {}, (default {})'.format(len(options) - 1, default))
+    print('please input a number between 0 and {}, (default {}):'.format(len(options) - 1, default))
     choose = input()
     if choose:
         return int(choose)
@@ -25,7 +26,7 @@ def root_login():
 
 
 def login(db):
-    user = input('please input the username: (input exit to exit)')
+    user = input('please input the username (input exit to exit):')
     if user == 'exit':
         return ''
     passwd = input('please input the passwd of {}:'.format(user))
@@ -77,7 +78,52 @@ def register(db):
 
 
 def stock_in(db):
-    pass
+    choose = select_option('Please choose method of stocking', ['single book', 'from file', 'exit'])
+    if choose == 0:
+        bno = input('please input the bno (input exit to exit):')
+        if bno == 'exit':
+            return
+        category = input('please input the category (default null):')
+        if not category:
+            category = 'null'
+        title = input('please input the title (default null):')
+        if not title:
+            title = 'null'
+        press = input('please input the press (default null):')
+        if not press:
+            press = 'null'
+        year = input('please input the year (default 2019):')
+        if not year:
+            year = 2019
+        else:
+            year = int(year)
+        author = input('please input the author (default null):')
+        if not author:
+            author = 'null'
+        price = input('please input the price (default null):')
+        if not price:
+            price = 'null'
+        total = input('please input the total (default 0):')
+        if not total:
+            total = 0
+        else:
+            total = int(total)
+        stock = input('please input the stock (default 0):')
+        if not stock:
+            stock = 0
+        else:
+            stock = int(stock)
+
+        sql = '''
+                insert into book
+                values ('{}','{}','{}','{}','{}','{}','{}','{}','{}')
+            '''.format(bno, category, title, press, year, author, price, total, stock)
+
+        result = execute_sql(db, sql)
+    elif choose == 1:
+        print(os.path)
+    else:
+        return
 
 
 def que(db):

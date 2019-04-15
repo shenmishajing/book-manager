@@ -1,8 +1,9 @@
 import pymysql
 
 
-def execute_single_sql(cursor, sql):
+def execute_single_sql(db, cursor, sql):
     cursor.execute(sql)
+    db.commit()
     result = cursor.fetchall()
 
     return result
@@ -15,10 +16,10 @@ def execute_sql(db, sql):
             result = []
             for s in sql:
                 assert isinstance(s, str)
-                res = execute_single_sql(cursor, s)
+                res = execute_single_sql(db, cursor, s)
                 result.append(res)
         elif isinstance(sql, str):
-            result = execute_single_sql(cursor, sql)
+            result = execute_single_sql(db, cursor, sql)
         else:
             print('The var sql must be valid sql query in string format or sequence format')
             return 0

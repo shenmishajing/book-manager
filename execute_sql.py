@@ -1,6 +1,9 @@
+import pymysql
+
 def execute_single_sql(cursor, sql):
     cursor.execute(sql)
     result = cursor.fetchall()
+
     return result
 
 
@@ -24,6 +27,11 @@ def execute_sql(db, sql):
         print('The db var must be a pymysql.connect instance')
         print('OR The version of your pymysql may not be right, you can get more information from requirements.txt')
         print(e)
+        return "{}".format(e)
     except ValueError as e:
         print("The var sql must be valid sql query in string format or sequence format")
         print(e)
+        return "{}".format(e)
+    except pymysql.err.IntegrityError as e:
+        print(e)
+        return "{}".format(e)

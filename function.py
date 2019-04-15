@@ -79,6 +79,7 @@ def register(db):
 
 def stock_in(db):
     choose = select_option('Please choose method of stocking', ['single book', 'from file', 'exit'])
+
     if choose == 0:
         bno = input('please input the bno (input exit to exit):')
         if bno == 'exit':
@@ -121,7 +122,20 @@ def stock_in(db):
 
         result = execute_sql(db, sql)
     elif choose == 1:
-        print(os.path)
+        path = input('please input the file path (default data.txt): {}/'.format(os.getcwd()))
+        if not path:
+            path = 'data.txt'
+        path = os.getcwd() + '/' + path
+
+        lines = open(path, 'r').readlines()
+
+        for line in lines:
+            sql = '''
+                    insert into book
+                    values {}
+                '''.format(line)
+
+            result = execute_sql(db, sql)
     else:
         return
 
@@ -139,4 +153,38 @@ def ret(db):
 
 
 def manager_card(db):
-    pass
+    choose = select_option('Please choose next action', ['add', 'delete', 'exit'])
+
+    if choose == 0:
+        cno = input('please input the cno (input exit to exit):')
+        if cno == 'exit':
+            return
+        name = input('please input the name (default null):')
+        if not name:
+            name = 'null'
+        department = input('please input the department (default null):')
+        if not department:
+            department = 'null'
+        t = input('please input the type (default null):')
+        if not t:
+            t = 'null'
+
+        sql = '''
+                insert into card
+                values ('{}','{}','{}','{}')
+            '''.format(cno, name, department, t)
+
+        result = execute_sql(db, sql)
+    elif choose == 1:
+        cno = input('please input the cno (input exit to exit):')
+        if cno == 'exit':
+            return
+
+        sql = '''
+                delete from card
+                where cno='{}'
+            '''.format(cno)
+
+        result = execute_sql(db, sql)
+    else:
+        return

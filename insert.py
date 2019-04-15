@@ -11,8 +11,8 @@ from function import *
 
 #插入窗口定义
 class insertForm(wx.Frame):
-    def __init__(self, parent,tableInfo):
-        wx.Frame.__init__(self, parent, id=wx.ID_ANY, title="信息插入", pos=wx.DefaultPosition,
+    def __init__(self, parent,tableInfo,db,tableName,superForm):
+        wx.Frame.__init__(self, parent, id=wx.ID_ANY, title= tableName + "信息插入", pos=wx.DefaultPosition,
                           size=wx.Size(526, 398), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
 
         self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
@@ -31,7 +31,7 @@ class insertForm(wx.Frame):
             if "date" in temp[1]:
                 control = wx.adv.DatePickerCtrl( self, wx.ID_ANY, wx.DefaultDateTime, wx.DefaultPosition, wx.DefaultSize, wx.adv.DP_DEFAULT )
             elif "int" in temp[1]:
-                control = wx.SpinCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.SP_ARROW_KEYS, 0, sys.maxsize, 0 )
+                control = wx.SpinCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.SP_ARROW_KEYS, 0, 10000, 0 )
             elif "decimal" in temp[1]:
                 temp[1].replace(" ","")
                 nums = list(int(x) for x in temp[1].split("(")[1].split(")")[0].split(","))
@@ -62,17 +62,26 @@ class insertForm(wx.Frame):
 
         #将按钮与事件绑定
         self.confirmButton.Bind(wx.EVT_BUTTON,self.confirmButtonClick)
+        self.cancelButton.Bind(wx.EVT_BUTTON,self.cancelButtomClick)
 
     def __del__(self):
         pass
 
     def confirmButtonClick(self, event):
-        event.Skip()
+        values = []
+        for c in self.controlList:
+            values.append(c.GetValue())
+        for c in values:
+            print("{} {}".format(type(c),c))
+        #event.Skip()
+
+    def cancelButtomClick(self,event):
+        self.Close()
 
 
-def test(tableInfo):
+def test(tableInfo,db,tableName):
     ex = wx.App()
-    insertForm(None,tableInfo)
+    insertForm(None,tableInfo,db,tableName,None)
     ex.MainLoop()
 
 
@@ -83,7 +92,7 @@ table = input('choose a table:')
 try:
     execute_sql(db,"use library;")
     result = execute_sql(db, "desc " + table + ";")
-    test(result)
+    test(result,db,table)
 except:
     print("Error")
 

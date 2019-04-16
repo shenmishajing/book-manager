@@ -9,7 +9,7 @@ from function import *
 # 插入窗口定义
 class insertForm(wx.Frame):
     def __init__(self, parent, tableInfo, db, tableName):
-        wx.Frame.__init__(self, parent, id=wx.ID_ANY, title=tableName + "信息插入", pos=wx.DefaultPosition,
+        wx.Frame.__init__(self, parent, id=wx.ID_ANY, title=tableName , pos=wx.DefaultPosition,
                           size=wx.Size(526, 398), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
 
         self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
@@ -59,15 +59,17 @@ class insertForm(wx.Frame):
 
         self.Centre(wx.BOTH)
 
-        self.Show()
 
         # 将按钮与事件绑定
+        self.Bind(wx.EVT_SHOW, self.formOnShow)
         self.confirm_button.Bind(wx.EVT_BUTTON, self.confirmButtonClick)
         self.cancel_button.Bind(wx.EVT_BUTTON, self.cancelButtomClick)
 
     def __del__(self):
         pass
 
+    def formOnShow(self, event):
+        event.Skip()
 
 
     def confirmButtonClick(self, event):

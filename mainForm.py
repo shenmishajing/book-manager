@@ -1,6 +1,12 @@
 import wx
 from function import *
 import mainFormTemplate
+import normalInsertForm
+import borrowForm
+import normalDeleteForm
+import returnForm
+
+
 
 class mainForm(mainFormTemplate.maiFrame):
 
@@ -14,6 +20,11 @@ class mainForm(mainFormTemplate.maiFrame):
             self.madmin_pwd.Enable(True)
             self.login.Enable(True)
             execute_sql(db = self.db,sql="use library;")
+            dlg = wx.MessageDialog(None, u"数据库连接成功", u"连接", wx.YES_DEFAULT | wx.ICON_QUESTION)
+            dlg.ShowModal()
+            dlg.Destroy()
+            self.connect_button.Enable(False)
+            self.rootpwd.Enable(False)
         except:
             dlg = wx.MessageDialog(None, u"连接密码错误", u"错误", wx.YES_NO | wx.ICON_QUESTION)
             dlg.ShowModal()
@@ -26,13 +37,16 @@ class mainForm(mainFormTemplate.maiFrame):
         pwd = self.madmin_pwd.GetValue()
         result = login(self.db,user,pwd)
         if result == "Error":
-            dlg = wx.MessageDialog(None, u"连接密码错误", u"错误", wx.YES_NO | wx.ICON_QUESTION)
+            dlg = wx.MessageDialog(None, u"账户错误", u"错误", wx.YES_NO | wx.ICON_QUESTION)
             dlg.ShowModal()
             dlg.Destroy()
         else:
             self.available = True
+            borrowForm.admin_id = self.admin_no.GetValue()
             self.admin_no.Clear()
             self.madmin_pwd.Clear()
+
+
 
     def searchChooseChange(self, event):
         if self.available:
@@ -67,7 +81,7 @@ class mainForm(mainFormTemplate.maiFrame):
             if len(cond) != 0:
                 sql += " where " + artribute + " = "
                 if "char" in info or "date" in info:
-                    sql += "'%{}%'".format(cond)
+                    sql += "'{}'".format(cond)
                 else:
                     sql += "{}".format(cond)
             sql += ';'
@@ -82,6 +96,82 @@ class mainForm(mainFormTemplate.maiFrame):
                 for j in range(0,templ):
                     self.info_grid.SetCellValue(i,j,"{}".format(result[i][j]))
 
+
+    def insertManyClick(self , event):
+        if self.available:
+            file_wildcard = "文本文件(*.txt)|*.txt"
+            dlg = wx.FileDialog(self, "打开文件",
+                            os.getcwd(),
+                            style=wx.FD_OPEN,
+                            wildcard=file_wildcard)
+            if dlg.ShowModal() == wx.ID_OK:
+                filename = dlg.GetPath()
+                lines = open(filename, 'r').readlines()
+                for line in lines:
+                    sql = '''
+                                 insert into book
+                                values {}
+                            '''.format(line)
+                    result = execute_sql(self.db, sql)
+            dlg.Destroy()
+
+    def modifyChoiceChange(self, event):
+        choice = self.modify_table_choice.GetString(self.modify_table_choice.GetSelection())
+        if choice == "图书管理":
+            self.insert_button.SetLabel("单本入库")
+            self.delete_button.Enable(False)
+            self.delete_button.SetLabel("删除书籍")
+        elif choice == "图书借阅管理":
+            self.insert_button.SetLabel("借书")
+            self.delete_button.Enable(True)
+            self.delete_button.SetLabel("还书")
+        elif choice == "借书卡管理":
+            self.insert_button.SetLabel("添加借书卡")
+            self.delete_button.Enable(True)
+            self.delete_button.SetLabel("删除借书卡")
+        else:
+            self.insert_button.SetLabel("添加管理员")
+            self.delete_button.Enable(False)
+            self.delete_button.SetLabel("删除管理员")
+
+
+
+    def insertButtonClick( self, event ):
+        if self.available:
+            label = self.insert_button.GetLabel()
+            if label == "借书":
+                table_name = "borrow"
+                table_info = execute_sql(self.db, "desc " + table_name + ";")
+                insert_form = borrowForm.borrowForm(None,table_info, self.db, table_name)
+            else:
+                if label == "单本入库":
+                    table_name = "book"
+                elif label == "添加借书卡":
+                    table_name = "card"
+                else:
+                    table_name = "administrator"
+                table_info = execute_sql(self.db, "desc " + table_name + ";")
+                insert_form = normalInsertForm.normalInsertForm(None,table_info, self.db, table_name)
+            insert_form.Show()
+
+
+    def deleteButtonClick( self, event ):
+        if self.available:
+            label = self.delete_button.GetLabel()
+            if label == "还书":
+                table_name = "borrow"
+                table_info = execute_sql(self.db, "desc " + table_name + ";")
+                delete_form = returnForm.returnForm(None,table_info, self.db, table_name)
+            else:
+                if label == "删除书籍":
+                    table_name = "book"
+                elif label == "删除借书卡":
+                    table_name = "card"
+                else:
+                    table_name = "administrator"
+                table_info = execute_sql(self.db, "desc " + table_name + ";")
+                delete_form = normalDeleteForm.deleteForm(None,table_info, self.db, table_name)
+            delete_form.Show()
 
 
 

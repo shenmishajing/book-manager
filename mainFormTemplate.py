@@ -18,7 +18,7 @@ import wx.grid
 class maiFrame ( wx.Frame ):
 
 	def __init__( self, parent ):
-		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = wx.EmptyString, pos = wx.DefaultPosition, size = wx.Size( 601,300 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
+		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = wx.EmptyString, pos = wx.DefaultPosition, size = wx.Size( 1280,720 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 
@@ -70,7 +70,7 @@ class maiFrame ( wx.Frame ):
 
 		function_sizer = wx.BoxSizer( wx.HORIZONTAL )
 
-		table_choiseChoices = [ u"book", u"borrow", u"card", wx.EmptyString ]
+		table_choiseChoices = [ u"book", u"borrow", u"card"]
 		self.table_choise = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, table_choiseChoices, 0 )
 		self.table_choise.SetSelection( 0 )
 		function_sizer.Add( self.table_choise, 1, wx.ALL, 5 )
@@ -92,15 +92,18 @@ class maiFrame ( wx.Frame ):
 
 		modify_sizer = wx.BoxSizer( wx.HORIZONTAL )
 
-		modify_table_choiceChoices = [ u"book", u"borrow", u"card", u"administrator", wx.EmptyString, wx.EmptyString ]
+		modify_table_choiceChoices = [ u"图书管理", u"图书借阅管理", u"借书卡管理", u"管理员信息管理"]
 		self.modify_table_choice = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, modify_table_choiceChoices, 0 )
 		self.modify_table_choice.SetSelection( 0 )
 		modify_sizer.Add( self.modify_table_choice, 1, wx.ALL, 5 )
 
-		self.insert_button = wx.Button( self, wx.ID_ANY, u"插入", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.insert_button = wx.Button( self, wx.ID_ANY, u"单本入库", wx.DefaultPosition, wx.DefaultSize, 0 )
 		modify_sizer.Add( self.insert_button, 0, wx.ALL, 5 )
 
-		self.delete_button = wx.Button( self, wx.ID_ANY, u"删除", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.insert_many = wx.Button(self, wx.ID_ANY, u"批量入库", wx.DefaultPosition, wx.DefaultSize, 0)
+		modify_sizer.Add(self.insert_many, 0, wx.ALL, 5)
+
+		self.delete_button = wx.Button( self, wx.ID_ANY, u"删除书籍", wx.DefaultPosition, wx.DefaultSize, 0 )
 		modify_sizer.Add( self.delete_button, 0, wx.ALL, 5 )
 
 
@@ -149,6 +152,7 @@ class maiFrame ( wx.Frame ):
 		self.search_button.Bind( wx.EVT_BUTTON, self.searchButtonClick )
 		self.insert_button.Bind( wx.EVT_BUTTON, self.insertButtonClick )
 		self.delete_button.Bind( wx.EVT_BUTTON, self.deleteButtonClick )
+		self.insert_many.Bind( wx.EVT_BUTTON, self.insertManyClick)
 
 	def __del__( self ):
 		pass
@@ -176,4 +180,5 @@ class maiFrame ( wx.Frame ):
 	def deleteButtonClick( self, event ):
 		event.Skip()
 
-
+	def insertManyClick(self , event):
+		event.Skip()

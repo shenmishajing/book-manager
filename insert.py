@@ -8,7 +8,7 @@ from function import *
 
 # 插入窗口定义
 class insertForm(wx.Frame):
-    def __init__(self, parent, tableInfo, db, tableName, superForm):
+    def __init__(self, parent, tableInfo, db, tableName):
         wx.Frame.__init__(self, parent, id=wx.ID_ANY, title=tableName + "信息插入", pos=wx.DefaultPosition,
                           size=wx.Size(526, 398), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
 
@@ -18,7 +18,7 @@ class insertForm(wx.Frame):
         self.control_list = []
         self.info = tableInfo
         self.table = tableName
-        # self.db = db
+        self.db = db
 
         # 根据table信息创建对应的窗口
         for temp in tableInfo:
@@ -71,38 +71,13 @@ class insertForm(wx.Frame):
 
 
     def confirmButtonClick(self, event):
-        values = []
-        for c in self.control_list:
-            values.append(c.GetValue())
-        sql = "insert into " + self.table + " ("
-        for index in range(0, len(self.info)):
-            if index != len(self.info) - 1:
-                sql = sql + self.info[index][0] + ","
-            else:
-                sql = sql + self.info[index][0] + ") values ("
-
-        for index in range(0, len(values)):
-            if type(values[index]) == str:
-                values[index] = "'" + values[index] + "'"
-            elif type(values[index]) == wx._core.DateTime:
-                year = values[index].year
-                month = values[index].month + 1
-                day = values[index].day
-                values[index] = "'{}/{}/{}'".format(year, month, day)
-            if index != len(values) - 1:
-                sql += "{},".format(values[index])
-            else:
-                sql += "{});".format(values[index])
-        print(sql)
-        result = execute_sql(db,sql)
-
-        self.Close()
+        event.Skip()
 
 
     def cancelButtomClick(self, event):
         self.Close()
 
-
+'''
 def test(tableInfo, db, tableName):
     ex = wx.App()
     insertForm(None, tableInfo, db, tableName, None)
@@ -119,3 +94,4 @@ try:
     test(result, db, table)
 except:
     print("Error")
+'''

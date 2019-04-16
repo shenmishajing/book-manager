@@ -24,6 +24,7 @@ class maiFrame ( wx.Frame ):
 
 		self.db = None
 		self.available = False
+		self.table_info = None
 
 		root_sizer = wx.BoxSizer( wx.HORIZONTAL )
 
@@ -84,6 +85,7 @@ class maiFrame ( wx.Frame ):
 
 		self.search_button = wx.Button( self, wx.ID_ANY, u"查询", wx.DefaultPosition, wx.DefaultSize, 0 )
 		function_sizer.Add( self.search_button, 1, wx.ALL, 5 )
+		self.search_button.Enable(False)
 
 
 		show_sizer.Add( function_sizer, 1, wx.EXPAND, 5 )
@@ -143,6 +145,7 @@ class maiFrame ( wx.Frame ):
 		self.connect_button.Bind( wx.EVT_BUTTON, self.connectClick )
 		self.login.Bind( wx.EVT_BUTTON, self.loginClick )
 		self.table_choise.Bind( wx.EVT_CHOICE, self.searchChooseChange )
+		self.modify_table_choice.Bind(wx.EVT_CHOICE,self.modifyChoiceChange)
 		self.search_button.Bind( wx.EVT_BUTTON, self.searchButtonClick )
 		self.insert_button.Bind( wx.EVT_BUTTON, self.insertButtonClick )
 		self.delete_button.Bind( wx.EVT_BUTTON, self.deleteButtonClick )
@@ -162,6 +165,9 @@ class maiFrame ( wx.Frame ):
 		event.Skip()
 
 	def searchButtonClick( self, event ):
+		event.Skip()
+
+	def modifyChoiceChange(self, event):
 		event.Skip()
 
 	def insertButtonClick( self, event ):

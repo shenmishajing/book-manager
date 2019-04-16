@@ -1,5 +1,13 @@
+import wx
+import mainForm
 from function import *
 
+app = wx.App()
+mainform = mainForm.mainForm(None)
+mainform.Show()
+app.MainLoop()
+
+'''
 db = root_login()
 
 while 1:
@@ -34,3 +42,4 @@ while 1:
             break
 
 db.close()
+'''

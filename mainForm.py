@@ -19,6 +19,7 @@ class mainForm(mainFormTemplate.maiFrame):
             self.admin_no.Enable(True)
             self.madmin_pwd.Enable(True)
             self.login.Enable(True)
+            self.register.Enable(True)
             execute_sql(db = self.db,sql="use library;")
             dlg = wx.MessageDialog(None, u"数据库连接成功", u"连接", wx.YES_DEFAULT | wx.ICON_QUESTION)
             dlg.ShowModal()
@@ -45,6 +46,13 @@ class mainForm(mainFormTemplate.maiFrame):
             borrowForm.admin_id = self.admin_no.GetValue()
             self.admin_no.Clear()
             self.madmin_pwd.Clear()
+            dlg = wx.MessageDialog(None, u"登录成功", u"登录", wx.YES_DEFAULT | wx.ICON_QUESTION)
+            dlg.ShowModal()
+            dlg.Destroy()
+            self.admin_no.Enable(False)
+            self.madmin_pwd.Enable(False)
+            self.login.Enable(False)
+            self.register.Enable(False)
 
 
 
@@ -174,10 +182,13 @@ class mainForm(mainFormTemplate.maiFrame):
             delete_form.Show()
 
 
+    def registerClick(self , event):
+        table_info = execute_sql(self.db, "desc administrator;")
+        insert_form = normalInsertForm.normalInsertForm(None, table_info, self.db, "administrator")
+        insert_form.Show()
 
 
 
-app = wx.App()
-mainform = mainForm(None)
-mainform.Show()
-app.MainLoop()
+
+
+

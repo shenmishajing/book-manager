@@ -63,6 +63,9 @@ class maiFrame ( wx.Frame ):
 		login_sizer.Add( self.login, 0, wx.ALL, 5 )
 		self.login.Enable(False)
 
+		self.register = wx.Button(self, wx.ID_ANY, u"注册", wx.DefaultPosition, wx.DefaultSize, 0)
+		login_sizer.Add(self.register, 0, wx.ALL, 5)
+		self.register.Enable(False)
 
 		root_sizer.Add( login_sizer, 2, wx.EXPAND, 5 )
 
@@ -147,6 +150,7 @@ class maiFrame ( wx.Frame ):
 		# Connect Events
 		self.connect_button.Bind( wx.EVT_BUTTON, self.connectClick )
 		self.login.Bind( wx.EVT_BUTTON, self.loginClick )
+		self.register.Bind( wx.EVT_BUTTON, self.registerClick)
 		self.table_choise.Bind( wx.EVT_CHOICE, self.searchChooseChange )
 		self.modify_table_choice.Bind(wx.EVT_CHOICE,self.modifyChoiceChange)
 		self.search_button.Bind( wx.EVT_BUTTON, self.searchButtonClick )
@@ -181,4 +185,7 @@ class maiFrame ( wx.Frame ):
 		event.Skip()
 
 	def insertManyClick(self , event):
+		event.Skip()
+
+	def registerClick(self , event):
 		event.Skip()

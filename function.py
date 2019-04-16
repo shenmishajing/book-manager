@@ -99,6 +99,8 @@ def stock_in(db):
         else:
             year = int(year)
         author = input('please input the author (default null):')
+        if not press:
+            press = 'null'
         if not author:
             author = 'null'
         price = input('please input the price (default null):')

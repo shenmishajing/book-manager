@@ -68,6 +68,8 @@ class insertForm(wx.Frame):
     def __del__(self):
         pass
 
+
+
     def confirmButtonClick(self, event):
         values = []
         for c in self.control_list:
@@ -92,7 +94,7 @@ class insertForm(wx.Frame):
             else:
                 sql += "{});".format(values[index])
         print(sql)
-        # result = execute_sql(db,sql)
+        result = execute_sql(db,sql)
         # print(type(result))
         # print(result)
 

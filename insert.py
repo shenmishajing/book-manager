@@ -95,8 +95,9 @@ class insertForm(wx.Frame):
                 sql += "{});".format(values[index])
         print(sql)
         result = execute_sql(db,sql)
-        # print(type(result))
-        # print(result)
+
+        self.Close()
+
 
     def cancelButtomClick(self, event):
         self.Close()

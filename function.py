@@ -25,22 +25,22 @@ def root_login():
     return db
 
 
-def login(db):
-    user = input('please input the username (input exit to exit):')
-    if user == 'exit':
-        return ''
-    passwd = input('please input the passwd of {}:'.format(user))
+def login(db,user,pwd):
+    #user = input('please input the username (input exit to exit):')
+    #if user == 'exit':
+    #    return ''
+    #passwd = input('please input the passwd of {}:'.format(user))
 
     sql = '''
                     select * 
                     from administrator
                     where ID='{}' and passwd='{}'
-                '''.format(user, passwd)
+                '''.format(user, pwd)
 
     result = execute_sql(db, sql)
     if not result:
         print('wrong username or passwd, please check your username and passwd')
-        return ''
+        return 'Error'
     else:
         return user
 

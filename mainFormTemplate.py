@@ -22,6 +22,9 @@ class maiFrame ( wx.Frame ):
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 
+		self.db = None
+		self.available = False
+
 		root_sizer = wx.BoxSizer( wx.HORIZONTAL )
 
 		login_sizer = wx.BoxSizer( wx.VERTICAL )
@@ -44,6 +47,7 @@ class maiFrame ( wx.Frame ):
 
 		self.admin_no = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
 		login_sizer.Add( self.admin_no, 0, wx.ALL, 5 )
+		self.admin_no.Enable(False)
 
 		self.m_staticText3 = wx.StaticText( self, wx.ID_ANY, u"管理员密码", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText3.Wrap( -1 )
@@ -52,9 +56,11 @@ class maiFrame ( wx.Frame ):
 
 		self.madmin_pwd = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.TE_PASSWORD )
 		login_sizer.Add( self.madmin_pwd, 0, wx.ALL, 5 )
+		self.madmin_pwd.Enable(False)
 
 		self.login = wx.Button( self, wx.ID_ANY, u"登录", wx.DefaultPosition, wx.DefaultSize, 0 )
 		login_sizer.Add( self.login, 0, wx.ALL, 5 )
+		self.login.Enable(False)
 
 
 		root_sizer.Add( login_sizer, 2, wx.EXPAND, 5 )
@@ -101,8 +107,8 @@ class maiFrame ( wx.Frame ):
 		self.info_grid = wx.grid.Grid( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
 
 		# Grid
-		self.info_grid.CreateGrid( 5, 5 )
-		self.info_grid.EnableEditing( True )
+		self.info_grid.CreateGrid( 50, 50 )
+		self.info_grid.EnableEditing( False )
 		self.info_grid.EnableGridLines( True )
 		self.info_grid.EnableDragGridSize( False )
 		self.info_grid.SetMargins( 0, 0 )

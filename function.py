@@ -25,11 +25,11 @@ def root_login():
     return db
 
 
-def login(db,user,pwd):
-    #user = input('please input the username (input exit to exit):')
-    #if user == 'exit':
+def login(db, user, pwd):
+    # user = input('please input the username (input exit to exit):')
+    # if user == 'exit':
     #    return ''
-    #passwd = input('please input the passwd of {}:'.format(user))
+    # passwd = input('please input the passwd of {}:'.format(user))
 
     sql = '''
                     select * 
@@ -140,6 +140,18 @@ def stock_in(db):
             result = execute_sql(db, sql)
     else:
         return
+
+
+def show_borrow(db, cno):
+    sql = '''
+            select bno,name
+            from borrow natural join book
+            where return_date='null' and cno='{}'
+        '''.format(cno)
+
+    result = execute_sql(db, sql)
+
+    return result
 
 
 def que(db):

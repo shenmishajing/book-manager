@@ -59,10 +59,10 @@ sqls = ['''
             (
                 cno char(7),
                 bno char(8),
-                borrow_date date null,
+                borrow_date date,
                 return_date date null,
                 administrator_ID char(7) null,
-                primary key (bno,cno),
+                primary key (bno,cno,borrow_date),
                 foreign key (bno) references book(bno) on update cascade on delete cascade,
                 foreign key (cno) references card(cno) on update cascade on delete cascade,
                 foreign key (administrator_ID) references administrator(ID) on update cascade on delete cascade

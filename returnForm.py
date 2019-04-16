@@ -2,6 +2,7 @@ import wx
 import insert
 from execute_sql import *
 
+
 class returnForm(insert.insertForm):
 
     def formOnShow(self, event):
@@ -28,24 +29,25 @@ class returnForm(insert.insertForm):
                 dlg.ShowModal()
                 dlg.Destroy()
             else:
-                sql = "select return_date from borrow where bno = '{}' and cno = '{}';".format(self.control_list[1].GetValue(),self.control_list[0].GetValue())
-                result = execute_sql(self.db,sql)
+                sql = "select return_date from borrow where bno = '{}' and cno = '{}';".format(
+                    self.control_list[1].GetValue(), self.control_list[0].GetValue())
+                result = execute_sql(self.db, sql)
                 temp = result[0][0]
-                if temp == '':
+                if temp is None:
                     temp_date = self.control_list[3].GetValue()
                     date = "{}/{}/{}".format(temp_date.year, temp_date.month + 1, temp_date.day)
 
                     sql = ['''
                                     update borrow
-                                    set return_date={}
+                                    set return_date='{}'
                                     where bno='{}' and cno='{}';
-                                '''.format(date,self.control_list[1].GetValue(),self.control_list[0].GetValue()),
-                        '''
-                            update book
-                            set stock=stock+1
-                            where bno='{}';
-                            '''.format(self.control_list[0].GetValue())
-                         ]
+                                '''.format(date, self.control_list[1].GetValue(), self.control_list[0].GetValue()),
+                           '''
+                               update book
+                               set stock=stock+1
+                               where bno='{}';
+                               '''.format(self.control_list[1].GetValue())
+                           ]
                     result = execute_sql(self.db, sql)
                     if type(result) == str:
                         dlg = wx.MessageDialog(None, u"信息更新失败", u"错误", wx.YES_NO | wx.ICON_QUESTION)

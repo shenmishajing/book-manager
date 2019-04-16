@@ -4,8 +4,8 @@ from execute_sql import *
 
 admin_id = "0000000"
 
-class borrowForm(insert.insertForm):
 
+class borrowForm(insert.insertForm):
 
     def formOnShow(self, event):
         self.control_list[3].Enable(False)
@@ -33,18 +33,18 @@ class borrowForm(insert.insertForm):
                 dlg.Destroy()
             else:
                 temp_date = self.control_list[2].GetValue()
-                date = "{}/{}/{}".format(temp_date.year,temp_date.month + 1,temp_date.day)
+                date = "{}/{}/{}".format(temp_date.year, temp_date.month + 1, temp_date.day)
 
                 sql = ['''
                             insert into borrow
-                            values ('{}','{}','{}','{}','{}');
+                            values ('{}','{}','{}',{},'{}');
                         '''.format(self.control_list[0].GetValue(), self.control_list[1].GetValue(), date, 'null',
                                    admin_id),
                        '''
                             update book
                             set stock=stock-1
                             where bno='{}';
-                            '''.format(self.control_list[0].GetValue())
+                            '''.format(self.control_list[1].GetValue())
                        ]
                 result = execute_sql(self.db, sql)
                 if type(result) == str:
@@ -53,4 +53,3 @@ class borrowForm(insert.insertForm):
                     dlg.Destroy()
                 else:
                     self.Close()
-

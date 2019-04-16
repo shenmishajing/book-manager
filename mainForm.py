@@ -118,7 +118,7 @@ class mainForm(mainFormTemplate.maiFrame):
                 for line in lines:
                     sql = '''
                                  insert into book
-                                values {}
+                                values {};
                             '''.format(line)
                     result = execute_sql(self.db, sql)
             dlg.Destroy()

@@ -79,21 +79,3 @@ class insertForm(wx.Frame):
     def cancelButtomClick(self, event):
         self.Close()
 
-'''
-def test(tableInfo, db, tableName):
-    ex = wx.App()
-    insertForm(None, tableInfo, db, tableName, None)
-    ex.MainLoop()
-
-
-passwd = input('please input the passwd of root:')
-db = pymysql.connect(host='localhost', port=3306, user='root', passwd=passwd)
-table = input('choose a table:')
-
-try:
-    execute_sql(db, "use library;")
-    result = execute_sql(db, "desc " + table + ";")
-    test(result, db, table)
-except:
-    print("Error")
-'''

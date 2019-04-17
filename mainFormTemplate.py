@@ -83,6 +83,7 @@ class maiFrame ( wx.Frame ):
 		self.artribute_choice.SetSelection( 0 )
 		function_sizer.Add( self.artribute_choice, 1, wx.ALL, 5 )
 
+
 		self.condition = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
 		function_sizer.Add( self.condition, 1, wx.ALL, 5 )
 
@@ -90,6 +91,10 @@ class maiFrame ( wx.Frame ):
 		function_sizer.Add( self.search_button, 1, wx.ALL, 5 )
 		self.search_button.Enable(False)
 
+		order_choices = []
+		self.order_choice = wx.Choice(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, order_choices,0)
+		self.order_choice.SetSelection(0)
+		function_sizer.Add(self.order_choice, 1, wx.ALL, 5)
 
 		show_sizer.Add( function_sizer, 1, wx.EXPAND, 5 )
 

@@ -69,7 +69,9 @@ class mainForm(mainFormTemplate.maiFrame):
                 self.info_grid.SetColLabelValue(index,c[0])
                 index += 1
             self.artribute_choice.SetItems(select_op)
+            self.order_choice.SetItems(select_op)
             self.artribute_choice.Select(0)
+            self.order_choice.Select(0)
             self.search_button.Enable(True)
 
 
@@ -92,7 +94,7 @@ class mainForm(mainFormTemplate.maiFrame):
                     sql += "'{}'".format(cond)
                 else:
                     sql += "{}".format(cond)
-            sql += ';'
+            sql += ' order by {};'.format(self.order_choice.GetString(self.order_choice.GetSelection()))
             result = execute_sql(self.db,sql)
             l = min(50,len(result))
             if l == 0:

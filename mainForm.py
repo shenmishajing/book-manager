@@ -6,10 +6,10 @@ import borrowForm
 import normalDeleteForm
 import returnForm
 
+last_order = None
 
 
 class mainForm(mainFormTemplate.maiFrame):
-
 
     def connectClick(self, event):
         pwd = self.rootpwd.GetValue()
@@ -20,7 +20,7 @@ class mainForm(mainFormTemplate.maiFrame):
             self.madmin_pwd.Enable(True)
             self.login.Enable(True)
             self.register.Enable(True)
-            execute_sql(db = self.db,sql="use library;")
+            execute_sql(db=self.db, sql="use library;")
             dlg = wx.MessageDialog(None, u"数据库连接成功", u"连接", wx.YES_DEFAULT | wx.ICON_QUESTION)
             dlg.ShowModal()
             dlg.Destroy()
@@ -32,11 +32,10 @@ class mainForm(mainFormTemplate.maiFrame):
             dlg.Destroy()
             self.rootpwd.Clear()
 
-
-    def loginClick( self, event ):
+    def loginClick(self, event):
         user = self.admin_no.GetValue()
         pwd = self.madmin_pwd.GetValue()
-        result = login(self.db,user,pwd)
+        result = login(self.db, user, pwd)
         if result == "Error":
             dlg = wx.MessageDialog(None, u"账户错误", u"错误", wx.YES_NO | wx.ICON_QUESTION)
             dlg.ShowModal()
@@ -54,19 +53,17 @@ class mainForm(mainFormTemplate.maiFrame):
             self.login.Enable(False)
             self.register.Enable(False)
 
-
-
     def searchChooseChange(self, event):
         if self.available:
             table = self.table_choise.GetString(self.table_choise.GetSelection())
-            self.table_info = execute_sql(self.db,"desc " + table + ";")
+            self.table_info = execute_sql(self.db, "desc " + table + ";")
             select_op = []
-            for index in range(0,50):
+            for index in range(0, 50):
                 self.info_grid.SetColLabelValue(index, "null")
             index = 0
             for c in self.table_info:
                 select_op.append(c[0])
-                self.info_grid.SetColLabelValue(index,c[0])
+                self.info_grid.SetColLabelValue(index, c[0])
                 index += 1
             self.artribute_choice.SetItems(select_op)
             self.order_choice.SetItems(select_op)
@@ -74,8 +71,8 @@ class mainForm(mainFormTemplate.maiFrame):
             self.order_choice.Select(0)
             self.search_button.Enable(True)
 
-
     def searchButtonClick(self, event):
+        global last_order
         if self.available:
             self.info_grid.ClearGrid()
             table = self.table_choise.GetString(self.table_choise.GetSelection())
@@ -94,26 +91,32 @@ class mainForm(mainFormTemplate.maiFrame):
                     sql += "'{}'".format(cond)
                 else:
                     sql += "{}".format(cond)
-            sql += ' order by {};'.format(self.order_choice.GetString(self.order_choice.GetSelection()))
-            result = execute_sql(self.db,sql)
-            l = min(50,len(result))
+            cur_order = self.order_choice.GetString(self.order_choice.GetSelection())
+            sql += ' order by {};'.format(cur_order)
+            result = execute_sql(self.db, sql)
+            if cur_order == last_order:
+                result = list(result)
+                result.reverse()
+                last_order = None
+            else:
+                last_order = cur_order
+            l = min(50, len(result))
             if l == 0:
                 templ = 0
             else:
                 templ = len(result[0])
 
-            for i in range(0,l):
-                for j in range(0,templ):
-                    self.info_grid.SetCellValue(i,j,"{}".format(result[i][j]))
+            for i in range(0, l):
+                for j in range(0, templ):
+                    self.info_grid.SetCellValue(i, j, "{}".format(result[i][j]))
 
-
-    def insertManyClick(self , event):
+    def insertManyClick(self, event):
         if self.available:
             file_wildcard = "文本文件(*.txt)|*.txt"
             dlg = wx.FileDialog(self, "打开文件",
-                            os.getcwd(),
-                            style=wx.FD_OPEN,
-                            wildcard=file_wildcard)
+                                os.getcwd(),
+                                style=wx.FD_OPEN,
+                                wildcard=file_wildcard)
             if dlg.ShowModal() == wx.ID_OK:
                 filename = dlg.GetPath()
                 lines = open(filename, 'r').readlines()
@@ -144,15 +147,13 @@ class mainForm(mainFormTemplate.maiFrame):
             self.delete_button.Enable(False)
             self.delete_button.SetLabel("删除管理员")
 
-
-
-    def insertButtonClick( self, event ):
+    def insertButtonClick(self, event):
         if self.available:
             label = self.insert_button.GetLabel()
             if label == "借书":
                 table_name = "borrow"
                 table_info = execute_sql(self.db, "desc " + table_name + ";")
-                insert_form = borrowForm.borrowForm(None,table_info, self.db, table_name)
+                insert_form = borrowForm.borrowForm(None, table_info, self.db, table_name)
             else:
                 if label == "单本入库":
                     table_name = "book"
@@ -161,17 +162,16 @@ class mainForm(mainFormTemplate.maiFrame):
                 else:
                     table_name = "administrator"
                 table_info = execute_sql(self.db, "desc " + table_name + ";")
-                insert_form = normalInsertForm.normalInsertForm(None,table_info, self.db, table_name)
+                insert_form = normalInsertForm.normalInsertForm(None, table_info, self.db, table_name)
             insert_form.Show()
 
-
-    def deleteButtonClick( self, event ):
+    def deleteButtonClick(self, event):
         if self.available:
             label = self.delete_button.GetLabel()
             if label == "还书":
                 table_name = "borrow"
                 table_info = execute_sql(self.db, "desc " + table_name + ";")
-                delete_form = returnForm.returnForm(None,table_info, self.db, table_name)
+                delete_form = returnForm.returnForm(None, table_info, self.db, table_name)
             else:
                 if label == "删除书籍":
                     table_name = "book"
@@ -180,17 +180,10 @@ class mainForm(mainFormTemplate.maiFrame):
                 else:
                     table_name = "administrator"
                 table_info = execute_sql(self.db, "desc " + table_name + ";")
-                delete_form = normalDeleteForm.deleteForm(None,table_info, self.db, table_name)
+                delete_form = normalDeleteForm.deleteForm(None, table_info, self.db, table_name)
             delete_form.Show()
 
-
-    def registerClick(self , event):
+    def registerClick(self, event):
         table_info = execute_sql(self.db, "desc administrator;")
         insert_form = normalInsertForm.normalInsertForm(None, table_info, self.db, "administrator")
         insert_form.Show()
-
-
-
-
-
-

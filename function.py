@@ -3,6 +3,20 @@ from execute_sql import *
 import os
 
 
+titleMap = {"图书": "book", "借书记录": "borrow", "借书卡": "card", "管理员": "administrator",
+            "书号":"bno","分类":"category","书名":"title","出版社": "press",
+            "年份":"year","作者":"author","价格":"price","总量": "total",
+            "库存":"stock","卡号":"cno","姓名":"name","单位":"department",
+            "类别":"type","管理员ID":"ID","密码":"passwd","联系方式":"contact",
+            "借书日期":"borrow_date","还书日期":"return_date","经手人ID":"administrator_ID",
+
+            "book":"图书","borrow":"借书记录","card":"借书卡","administrator":"管理员",
+            "bno":"书号","category":"分类","title":"书名","press":"出版社","year":"年份",
+            "author":"作者","price":"价格","total":"总量","stock":"库存","cno":"卡号",
+            "name":"姓名","department":"单位","type":"类别","ID":"管理员ID","passwd":"密码",
+            "contact":"联系方式","borrow_date":"借书日期","return_date":"还书日期","administrator_ID":"经手人ID"}
+
+
 def select_option(message, options, default=0):
     print(message)
     for i, option in enumerate(options):

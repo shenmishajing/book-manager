@@ -9,7 +9,7 @@ from function import *
 # 插入窗口定义
 class insertForm(wx.Frame):
     def __init__(self, parent, tableInfo, db, tableName):
-        wx.Frame.__init__(self, parent, id=wx.ID_ANY, title=tableName , pos=wx.DefaultPosition,
+        wx.Frame.__init__(self, parent, id=wx.ID_ANY, title="" , pos=wx.DefaultPosition,
                           size=wx.Size(526, 398), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
 
         self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
@@ -23,7 +23,8 @@ class insertForm(wx.Frame):
         # 根据table信息创建对应的窗口
         for temp in tableInfo:
             temp_sizer = wx.BoxSizer(wx.HORIZONTAL)
-            temp_label = wx.StaticText(self, wx.ID_ANY, temp[0], wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_RIGHT)
+            temp_text = titleMap[temp[0]]
+            temp_label = wx.StaticText(self, wx.ID_ANY, temp_text, wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_RIGHT)
             temp_label.Wrap(-1)
             temp_sizer.Add(temp_label, 2, wx.ALL, 5)
             if "date" in temp[1]:

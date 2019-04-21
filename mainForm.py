@@ -56,14 +56,16 @@ class mainForm(mainFormTemplate.maiFrame):
     def searchChooseChange(self, event):
         if self.available:
             table = self.table_choise.GetString(self.table_choise.GetSelection())
+            table = titleMap[table]
             self.table_info = execute_sql(self.db, "desc " + table + ";")
             select_op = []
             for index in range(0, 50):
-                self.info_grid.SetColLabelValue(index, "null")
+                self.info_grid.SetColLabelValue(index, " ")
             index = 0
             for c in self.table_info:
-                select_op.append(c[0])
-                self.info_grid.SetColLabelValue(index, c[0])
+                temp = titleMap[c[0]]
+                select_op.append(temp)
+                self.info_grid.SetColLabelValue(index, temp)
                 index += 1
             self.artribute_choice.SetItems(select_op)
             self.order_choice.SetItems(select_op)
@@ -76,7 +78,9 @@ class mainForm(mainFormTemplate.maiFrame):
         if self.available:
             self.info_grid.ClearGrid()
             table = self.table_choise.GetString(self.table_choise.GetSelection())
+            table = titleMap[table]
             artribute = self.artribute_choice.GetString(self.artribute_choice.GetSelection())
+            artribute = titleMap[artribute]
             info = ''
             for c in self.table_info:
                 if artribute == c[0]:
@@ -92,6 +96,7 @@ class mainForm(mainFormTemplate.maiFrame):
                 else:
                     sql += "{}".format(cond)
             cur_order = self.order_choice.GetString(self.order_choice.GetSelection())
+            cur_order = titleMap[cur_order]
             sql += ' order by {};'.format(cur_order)
             result = execute_sql(self.db, sql)
             if cur_order == last_order:

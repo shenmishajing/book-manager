@@ -73,7 +73,7 @@ class maiFrame ( wx.Frame ):
 
 		function_sizer = wx.BoxSizer( wx.HORIZONTAL )
 
-		table_choiseChoices = [ u"book", u"borrow", u"card"]
+		table_choiseChoices = [ u"图书", u"借书记录", u"借书卡"]
 		self.table_choise = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, table_choiseChoices, 0 )
 		self.table_choise.SetSelection( 0 )
 		function_sizer.Add( self.table_choise, 1, wx.ALL, 5 )

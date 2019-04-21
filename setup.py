@@ -4,15 +4,17 @@ from function import *
 passwd = input('please input the passwd of root:')
 db = pymysql.connect(host='localhost', port=3306, user='root', passwd=passwd)
 
+sql = '''
+            show databases;
+        '''
+
+result = execute_sql(db, sql)
+
+print(result)
+
 sqls = ['''
-            show databases;
-        ''',
-        '''
-            drop database library;
-        ''',
-        '''
-            show databases;
-        ''',
+           show databases;
+       ''',
         '''
             create database library;
         ''',
@@ -61,7 +63,7 @@ sqls = ['''
                 bno char(8),
                 borrow_date date,
                 return_date date null,
-                administrator_ID char(7) null,
+                administrator_ID char(7),
                 primary key (bno,cno,borrow_date),
                 foreign key (bno) references book(bno) on update cascade on delete cascade,
                 foreign key (cno) references card(cno) on update cascade on delete cascade,
@@ -71,6 +73,11 @@ sqls = ['''
         '''
             show tables;
         ''']
+
+if ('library',) in result:
+    sqls.insert(0, '''
+            drop database library;
+        ''')
 
 results = execute_sql(db, sqls)
 
